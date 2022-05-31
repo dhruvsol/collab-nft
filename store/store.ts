@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import FormReducers from "../features/member";
+import CollabInfo from "../features/collabInfo";
 export const store = configureStore({
   reducer: {
     FormReducers: FormReducers,
+    collabInfo: CollabInfo,
   },
 });
 
