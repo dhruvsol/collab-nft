@@ -29,3 +29,10 @@
   background-size: cover;
   height: 100vh;
 }
+
+.bgLanding {
+  background-image: url("/Landing\ Page.png");
+  width: 100%;
+  background-size: cover;
+  height: 100vh;
+}

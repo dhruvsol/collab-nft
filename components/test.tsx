@@ -1,11 +1,12 @@
 import Image from "next/image";
+import React from "react";
 
-export const Landing = () => {
+export const Test = () => {
   return (
     <>
-      <div className="relative min-h-screen  overflow-hidden">
-        <div className="bg-[#F1ACAE] blur-[300px] -top-64 -right-16 rounded-full absolute w-[30rem] h-[30rem] "></div>
-        <main className=" bgTexture bg-[#0A1837] flex flex-col justify-center items-center space-y-20 min-h-screen ">
+      <div className="bgLanding grid grid-cols-2 ">
+        <div></div>
+        <main className="  flex flex-col justify-center items-center space-y-20 min-h-screen  ">
           <h1 className="text-3xl xl:text-6xl font-extrabold uppercase super font-Lexend ">
             Supercollabs
           </h1>
@@ -27,7 +28,6 @@ export const Landing = () => {
             Connect Wallet
           </button>
         </main>
-        <div className="bg-[#50508D] blur-[300px] -bottom-64 -left-16 rounded-full absolute w-[30rem] h-[30rem] "></div>
       </div>
     </>
   );
