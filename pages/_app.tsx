@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ConnectionProvider endpoint={endpoint}>
         <WalletProvider wallets={wallets}>
           <WalletModalProvider>
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
           </WalletModalProvider>
         </WalletProvider>
       </ConnectionProvider>

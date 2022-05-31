@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.super {
+  background: linear-gradient(
+      90.26deg,
+      #ffffff 0.22%,
+      #da99a9 0.23%,
+      #cf93af 9.67%,
+      rgba(103, 88, 230, 0.990462) 101.25%,
+      rgba(255, 255, 255, 0.54) 101.26%
+    ),
+    #583737;
+  background-clip: text;
+  color: transparent;
+}
+.superdes {
+  background: linear-gradient(91.45deg, #8bd1d2 1.54%, #e07ff9 118.27%);
+  background-clip: text;
+  color: transparent;
+}
+.bgTexture {
+  background-image: url("/Texture.png");
+}
+.bglanding {
+  background-image: url("/gradient1.png");
+  width: 100%;
+  background-size: cover;
+  height: 100vh;
+}
