@@ -11,6 +11,7 @@ module.exports = {
       },
       colors: {
         phantom: "linear-gradient(189.84deg, #534BB2 7.39%, #551EF5 77.27%)",
+        borderline: "rgba(139, 209, 210, 0.46)",
       },
       backgroundImage: {
         phan: "linear-gradient(189.84deg, #534BB2 7.39%, #551EF5 77.27%)",

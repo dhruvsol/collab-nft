@@ -36,3 +36,9 @@
   background-size: cover;
   height: 100vh;
 }
+.bgForm {
+  background-image: url("/Form.png");
+  width: 100%;
+  background-size: cover;
+  height: 100vh;
+}

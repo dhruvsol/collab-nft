@@ -12,21 +12,21 @@ export const Landing = () => {
           </h1>
           <div className="flex flex-col justify-center items-center text-center space-y-2">
             <p className="text-transparent bg-clip-text text-xl xl:text-2xl 2xl:text-3xl tracking-tighter font-medium capitalize superdes font-Lexend">
-              Reward Your Team With A Proof Of
+              {'"Reward Your Team With A Proof Of'}
             </p>
             <p className=" text-xl 2xl:text-3xl xl:text-xl font-medium capitalize  font-Lexend flex flex-row gap-x-3 ">
               <span className="text-transparent bg-clip-text superdes tracking-tighter ">
-                Collaboration As An NFT
+                {'Collaboration As An NFT"'}
               </span>
               🏆
             </p>
           </div>
-          <button className="bg-phan p-5 h-12 w-72 gap-x-4 relative flex justify-center items-center rounded-2xl font-medium text-lg font-Outfit text-white ">
+          <button className="bg-phan p-5 h-12 w-72 gap-x-4 relative flex justify-center items-center rounded-2xl font-medium text-2xl font-Outfit text-white ">
             <Image
               src="/phantomicon.svg"
               alt="phantom icons"
-              width={20}
-              height={20}
+              width={30}
+              height={30}
             />
             Connect Wallet
           </button>
