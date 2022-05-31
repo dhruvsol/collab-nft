@@ -10,7 +10,7 @@ export const Test = () => {
           <h1 className="text-3xl xl:text-6xl font-extrabold uppercase super font-Lexend ">
             Supercollabs
           </h1>
-          <div className="flex flex-col justify-center items-center text-center">
+          <div className="flex flex-col justify-center items-center text-center space-y-2">
             <p className="text-transparent bg-clip-text text-xl xl:text-3xl tracking-tighter font-medium capitalize superdes font-Lexend">
               Reward Your Team With A Proof Of
             </p>

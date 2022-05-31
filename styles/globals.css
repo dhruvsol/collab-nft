@@ -31,7 +31,7 @@
 } */
 
 .bgLanding {
-  background-image: url("/Landing\ Page.png");
+  background-image: url("/landing.png");
   width: 100%;
   background-size: cover;
   height: 100vh;
