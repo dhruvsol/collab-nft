@@ -20,7 +20,7 @@
   background-clip: text;
   color: transparent;
 }
-.bgTexture {
+/* .bgTexture {
   background-image: url("/Texture.png");
 }
 .bglanding {
@@ -28,7 +28,7 @@
   width: 100%;
   background-size: cover;
   height: 100vh;
-}
+} */
 
 .bgLanding {
   background-image: url("/Landing\ Page.png");

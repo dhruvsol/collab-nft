@@ -10,12 +10,15 @@ export const Test = () => {
           <h1 className="text-3xl xl:text-6xl font-extrabold uppercase super font-Lexend ">
             Supercollabs
           </h1>
-          <div className="flex flex-col justify-center text-center">
-            <p className="text-transparent bg-clip-text text-xl xl:text-2xl font-medium capitalize superdes font-Lexend">
+          <div className="flex flex-col justify-center items-center text-center">
+            <p className="text-transparent bg-clip-text text-xl xl:text-3xl tracking-tighter font-medium capitalize superdes font-Lexend">
               Reward Your Team With A Proof Of
             </p>
-            <p className="text-transparent bg-clip-text text-xl xl:text-2xl font-medium capitalize superdes font-Lexend">
-              Collaboration As An NFT 🏆
+            <p className=" text-xl xl:text-3xl font-medium capitalize  font-Lexend flex flex-row gap-x-3 ">
+              <span className="text-transparent bg-clip-text superdes tracking-tighter ">
+                Collaboration As An NFT
+              </span>
+              🏆
             </p>
           </div>
           <button className="bg-phan p-5 h-12 w-72 gap-x-4 relative flex justify-center items-center rounded-2xl font-medium text-lg font-Outfit text-white ">
