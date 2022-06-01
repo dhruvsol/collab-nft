@@ -42,3 +42,16 @@
   background-size: cover;
   height: 100vh;
 }
+.wallet-adapter-button-trigger {
+  background: linear-gradient(
+    189.84deg,
+    #534bb2 7.39%,
+    #551ef5 77.27%
+  ) !important;
+  width: 20rem !important;
+  display: flex;
+  justify-content: center;
+}
+.wallet-adapter-button {
+  border-radius: 2rem !important;
+}

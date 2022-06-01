@@ -1,18 +1,26 @@
-import { useAppSelector } from "../store/hooks";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
+import Router from "next/router";
+
+import { useEffect } from "react";
 
 export const Navbar = () => {
-  const AddminWallet = useAppSelector((state) => state.collabInfo.AdminWallet);
+  const { disconnecting, connected } = useWallet();
+
+  useEffect(() => {
+    if (disconnecting === true || connected === false) {
+      Router.push("/");
+    }
+  }, [connected, disconnecting]);
+
   return (
     <>
       <div className="flex justify-between px-10 h-20 items-center border-b border-[#8BD1D2] ">
         <h1 className="uppercase super text-3xl font-Lexend font-extrabold tracking-tight ">
           SuperCollabs
         </h1>
-        <button className="bg-phan p-5 h-10 w-48 gap-x-4 relative flex justify-center items-center rounded-2xl font-medium text-lg font-Outfit text-white">
-          {AddminWallet.slice(0, 4) +
-            "...." +
-            AddminWallet.slice(AddminWallet.length - 4, AddminWallet.length)}
-        </button>
+        <WalletMultiButton />
       </div>
     </>
   );

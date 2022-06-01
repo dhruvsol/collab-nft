@@ -1,7 +1,7 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import Image from "next/image";
 import React, { useEffect } from "react";
+
 require("@solana/wallet-adapter-react-ui/styles.css");
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addAdminWallet } from "../features/collabInfo";
@@ -10,13 +10,15 @@ export const Landing = () => {
   const walletAddress = useAppSelector((state) => state.collabInfo.AdminWallet);
 
   const dispatch = useAppDispatch();
-  const { publicKey } = useWallet();
+  const { publicKey, connected } = useWallet();
+  const info = useWallet();
+  console.log(info);
   useEffect(() => {
     dispatch(addAdminWallet(publicKey?.toString()));
-    if (walletAddress != "") {
+    if (connected) {
       Router.push("/reward");
     }
-  }, [publicKey]);
+  }, [publicKey, connected]);
   console.log(walletAddress);
 
   return (
@@ -39,19 +41,8 @@ export const Landing = () => {
             </p>
           </div>
           <div className="bg-phan flex justify-center relative">
-            <span className=" opacity-0  absolute z-10">
-              {" "}
-              <WalletMultiButton />
-            </span>
-            <button className=" p-5 h-12 w-72 gap-x-4 relative flex justify-center items-center rounded-2xl font-medium text-2xl font-Outfit text-white ">
-              <Image
-                src="/phantomicon.svg"
-                alt="phantom icons"
-                width={30}
-                height={30}
-              />
-              Connect Wallet
-            </button>
+            {" "}
+            <WalletMultiButton />
           </div>
         </main>
       </div>
