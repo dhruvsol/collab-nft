@@ -4,7 +4,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import Router from "next/router";
 
 import { useEffect } from "react";
-
+require("@solana/wallet-adapter-react-ui/styles.css");
 export const Navbar = () => {
   const { disconnecting, connected } = useWallet();
 
