@@ -40,7 +40,8 @@
   background-image: url("/Form.png");
   width: 100%;
   background-size: cover;
-  height: 100vh;
+  background-repeat: repeat-y;
+  height: max-content;
 }
 .wallet-adapter-button-trigger {
   background: linear-gradient(
@@ -54,4 +55,13 @@
 }
 .wallet-adapter-button {
   border-radius: 2rem !important;
+}
+.formborder {
+  /* border-image-source: linear-gradient(
+    130.18deg,
+    #8bd1d2 0%,
+    #e07ff9 100%
+  ) !important; */
+
+  border: 2px solid white;
 }

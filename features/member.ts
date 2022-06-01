@@ -4,7 +4,7 @@ interface members {
   Name: string;
   WalletAddress: string;
   Role: string;
-  XpPercent: string;
+  XpPercent: number;
 }
 interface FormInfo {
   MemberArray: Array<members>;

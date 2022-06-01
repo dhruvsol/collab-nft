@@ -1,5 +1,8 @@
 import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import {
+  WalletMultiButton,
+  WalletConnectButton,
+} from "@solana/wallet-adapter-react-ui";
 import React, { useEffect } from "react";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
@@ -10,9 +13,9 @@ export const Landing = () => {
   const walletAddress = useAppSelector((state) => state.collabInfo.AdminWallet);
 
   const dispatch = useAppDispatch();
-  const { publicKey, connected } = useWallet();
-  const info = useWallet();
-  console.log(info);
+  const { publicKey, connected, connect } = useWallet();
+  console.log(connect);
+
   useEffect(() => {
     dispatch(addAdminWallet(publicKey?.toString()));
     if (connected) {
