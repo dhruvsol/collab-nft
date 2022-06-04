@@ -20,15 +20,6 @@
   background-clip: text;
   color: transparent;
 }
-/* .bgTexture {
-  background-image: url("/Texture.png");
-}
-.bglanding {
-  background-image: url("/gradient1.png");
-  width: 100%;
-  background-size: cover;
-  height: 100vh;
-} */
 
 .bgLanding {
   background-image: url("/landing.png");
@@ -43,13 +34,20 @@
   background-repeat: repeat-y;
   height: max-content;
 }
+.bgClaim {
+  background-image: url("/Form.png");
+  width: 100%;
+  background-size: cover;
+  background-repeat: repeat-y;
+  height: 100vh;
+}
 .wallet-adapter-button-trigger {
   background: linear-gradient(
     189.84deg,
     #534bb2 7.39%,
     #551ef5 77.27%
   ) !important;
-  width: 20rem !important;
+  width: 14rem !important;
   display: flex;
   justify-content: center;
 }
@@ -57,11 +55,7 @@
   border-radius: 2rem !important;
 }
 .formborder {
-  /* border-image-source: linear-gradient(
-    130.18deg,
-    #8bd1d2 0%,
-    #e07ff9 100%
-  ) !important; */
-
-  border: 2px solid white;
+  border-image: linear-gradient(to left, #8bd1d2, #e07ff9) !important;
+  border-style: solid;
+  border-width: 3px;
 }

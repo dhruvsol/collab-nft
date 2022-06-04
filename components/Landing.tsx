@@ -43,7 +43,7 @@ export const Landing = () => {
               🏆
             </p>
           </div>
-          <div className="bg-phan flex justify-center relative">
+          <div className="flex justify-center relative ">
             {" "}
             <WalletMultiButton />
           </div>

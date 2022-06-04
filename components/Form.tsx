@@ -2,8 +2,10 @@ import { useState } from "react";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addNewMember, removeMember } from "../features/member";
+import { AdminSuccess } from "./AdminSuccess";
 export const Form = () => {
   const [form, setForm] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const [Name, setMemberName] = useState<string>("");
   const [Role, setRole] = useState<string>("");
   const [WalletAddress, setWalletAddress] = useState<string>("");
@@ -71,16 +73,24 @@ export const Form = () => {
         </div>
 
         <div>
-          <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
-            <span className="text-2xl">Added Members</span>
-            <BsExclamationCircleFill />{" "}
-          </h1>
+          <div className="flex space-x-2 items-center">
+            <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
+              <span className="text-2xl">Added Members</span>
+              <BsExclamationCircleFill />{" "}
+            </h1>
+            <button
+              onClick={() => setForm(true)}
+              className="bg-[#6758E5FD] w-20 h-7 rounded-lg flex justify-center items-center font-normal text-white font-Outfit"
+            >
+              + Add
+            </button>
+          </div>
           {Members.map(({ WalletAddress, Name, XpPercent }) => {
             return (
               <>
                 <div
                   key={WalletAddress}
-                  className="flex justify-between border-2 border-[#939393] p-3 rounded-xl my-3"
+                  className="flex justify-between border-2 border-[#939393] px-3 py-2 rounded-xl my-3"
                 >
                   <div>
                     <h1 className="text-lg flex space-x-1">
@@ -115,7 +125,7 @@ export const Form = () => {
                   </div>
                   <h1
                     onClick={() => RemoveMember(WalletAddress)}
-                    className="text-[#F24848] text-lg cursor-pointer"
+                    className="text-[#F24848] text-lg cursor-pointer align-top -mt-2"
                   >
                     Remove
                   </h1>
@@ -126,18 +136,19 @@ export const Form = () => {
         </div>
 
         <button
-          onClick={() => setForm(true)}
-          className="w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
+          onClick={() => setSuccess(true)}
+          className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
         >
-          + Add Member
+          Submit
         </button>
+        {success && <AdminSuccess />}
         {form && (
           <>
             <div className="z-40 fixed  transition-opacity w-full">
               <div className="w-full flex justify-center items-center">
                 <div className="fixed inset-0 bg-light-black backdrop-blur-sm">
                   <div className="flex justify-center items-center min-h-screen">
-                    <div className="h-[31rem] w-[28rem] bg-[#0A1837] opacity-80 rounded-2xl px-10 formborder  ">
+                    <div className="h-[31rem] w-[28rem]  bg-[#0A1837] opacity-80 rounded-2xl px-10 formborder  ">
                       <h1 className="text-2xl text-white font-medium font-Outfit py-5">
                         Add a members
                       </h1>
@@ -147,7 +158,7 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Name
                             </h1>
-                            <p className="text-xs text-[#D7D7D7] p-1 px-2 rounded-xl bg-[#6758E5FD]">
+                            <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
                               Required
                             </p>
                           </div>
@@ -164,7 +175,7 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Role
                             </h1>
-                            <p className="text-xs text-[#D7D7D7] p-1 px-2 rounded-xl bg-[#6758E5FD]">
+                            <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
                               Required
                             </p>
                           </div>
@@ -181,7 +192,7 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Wallet Address
                             </h1>
-                            <p className="text-xs text-[#D7D7D7] p-1 px-2 rounded-xl bg-[#6758E5FD]">
+                            <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
                               Required
                             </p>
                           </div>
@@ -198,7 +209,7 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               XPs
                             </h1>
-                            <p className="text-xs text-[#D7D7D7] p-1 px-2 rounded-xl bg-[#6758E5FD]">
+                            <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
                               Required
                             </p>
                           </div>
@@ -215,7 +226,7 @@ export const Form = () => {
                       <div className="flex justify-between py-5 space-x-4">
                         <button
                           onClick={() => setForm(false)}
-                          className=" font-medium text-white font-Outfit p-2 border-2 w-full border-[#5436D2] rounded-3xl"
+                          className=" font-medium text-white font-Outfit p-2 border-2 w-full border-[#5439CE] rounded-3xl"
                         >
                           Cancel
                         </button>
@@ -224,7 +235,7 @@ export const Form = () => {
                             setForm(false);
                             AddMember();
                           }}
-                          className="font-medium  font-Outfit text-white w-full bg-[#5436D2] p-2 rounded-3xl"
+                          className="font-medium  font-Outfit text-white w-full bg-[#5439CE] p-2 rounded-3xl"
                         >
                           Add member +
                         </button>
