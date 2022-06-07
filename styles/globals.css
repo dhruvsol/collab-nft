@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+*::-webkit-scrollbar {
+  display: none;
+}
 .super {
   background: linear-gradient(
       90.26deg,
@@ -19,6 +22,11 @@
   background: linear-gradient(91.45deg, #8bd1d2 1.54%, #e07ff9 118.27%);
   background-clip: text;
   color: transparent;
+}
+.nftheading {
+  background: linear-gradient(90.01deg, #37357e 4.09%, #ab06a4 98.16%);
+  color: transparent;
+  background-clip: text;
 }
 
 .bgLanding {
@@ -58,4 +66,11 @@
   border-image: linear-gradient(to left, #8bd1d2, #e07ff9) !important;
   border-style: solid;
   border-width: 3px;
+}
+.bgnft {
+  background-image: url("/nft.png");
+  background-size: cover;
+}
+.nftLine {
+  background: linear-gradient(90.01deg, #37357e 4.09%, #ab06a4 98.16%);
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-
+import { Preview } from "../../components/Preview";
 import { NavbarMember } from "../../components/NavbarMember";
 
 const MemberClaim = () => {
@@ -15,13 +15,14 @@ const MemberClaim = () => {
           <div className="flex justify-center">
             <hr className="w-2/5 border border-[#8BD1D2]" />
           </div>
-          <div className="flex justify-center ">
+          <Preview />
+          <div className="flex justify-center pt-5 ">
             <button className="flex justify-center  items-center bg-[#6758E5FD] rounded-2xl w-72 h-10 text-white font-medium font-Outfit ">
               Claim Your NFT
             </button>
           </div>
-          <div className="flex justify-center">
-            <div className="bg-[#FFDCDE] font-Outfit w-2/4 h-10 flex justify-center items-center rounded-xl text-md space-x-2">
+          <div className="md:hidden flex justify-center">
+            <div className=" bg-[#FFDCDE] font-Outfit w-2/4 h-10 flex justify-center items-center rounded-xl text-md space-x-2">
               <span>
                 <Image src="/emg.svg" alt="emg" width={24} height={24} />
               </span>
