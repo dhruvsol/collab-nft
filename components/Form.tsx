@@ -1,8 +1,14 @@
 import { useState } from "react";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addNewMember, removeMember } from "../features/member";
+import member, { addNewMember, removeMember } from "../features/member";
 import { AdminSuccess } from "./AdminSuccess";
+import {
+  addAdminWallet,
+  addCollabName,
+  addDescription,
+  addLeadName,
+} from "../features/collabInfo";
 export const Form = () => {
   const [form, setForm] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -11,6 +17,8 @@ export const Form = () => {
   const [WalletAddress, setWalletAddress] = useState<string>("");
   const [XpPercent, setMemberXP] = useState<number>(0);
   const Members = useAppSelector((state) => state.FormReducers.MemberArray);
+  const memberCount = useAppSelector((state) => state.FormReducers.memberCount);
+
   const dispatch = useAppDispatch();
   const AddMember = () => {
     const a = { Name, Role, WalletAddress, XpPercent };
@@ -41,6 +49,7 @@ export const Form = () => {
           <input
             type="text"
             name="Collab Name"
+            onChange={(e) => dispatch(addCollabName(e.target.value))}
             className="w-full rounded-xl h-14 bg-transparent text-[#939393]  outline outline-[#939393] px-4"
             placeholder="Write collab title"
           />
@@ -54,6 +63,7 @@ export const Form = () => {
           <input
             type="text"
             name="lead name"
+            onChange={(e) => dispatch(addLeadName(e.target.value))}
             className="w-full rounded-xl h-14 bg-transparent text-[#939393]  outline outline-[#939393] px-4"
             placeholder="Write lead name"
           />
@@ -67,24 +77,38 @@ export const Form = () => {
           <textarea
             rows={4}
             name="Description"
+            onChange={(e) => dispatch(addDescription(e.target.value))}
             className="w-full rounded-xl pt-3  bg-transparent text-[#939393]  outline outline-[#939393] px-4 resize-none"
             placeholder="Write collab description"
           />
         </div>
 
         <div>
-          <div className="flex space-x-2 items-center">
-            <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
-              <span className="text-2xl">Added Members</span>
-              <BsExclamationCircleFill />{" "}
-            </h1>
-            <button
-              onClick={() => setForm(true)}
-              className="bg-[#6758E5FD] w-20 h-7 rounded-lg flex justify-center items-center font-normal text-white font-Outfit"
-            >
-              + Add
-            </button>
-          </div>
+          {memberCount === 0 ? (
+            <>
+              <button
+                onClick={() => setForm(true)}
+                className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
+              >
+                Add Member
+              </button>
+            </>
+          ) : (
+            <>
+              <div className="flex space-x-2 items-center">
+                <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
+                  <span className="text-2xl">Added Members</span>
+                  <BsExclamationCircleFill />{" "}
+                </h1>
+                <button
+                  onClick={() => setForm(true)}
+                  className="bg-[#6758E5FD] w-20 h-7 rounded-lg flex justify-center items-center font-normal text-white font-Outfit"
+                >
+                  + Add
+                </button>
+              </div>
+            </>
+          )}
           {Members.map(({ WalletAddress, Name, XpPercent }) => {
             return (
               <>
@@ -108,12 +132,6 @@ export const Form = () => {
                               WalletAddress.length - 4,
                               WalletAddress.length
                             )}
-                        {/* {WalletAddress.slice(0, 4) +
-                          "...." +
-                          WalletAddress.slice(
-                            WalletAddress.length - 4,
-                            WalletAddress.length
-                          )} */}
                       </span>
                     </h1>
                     <h1 className="text-lg flex space-x-1">
@@ -125,7 +143,7 @@ export const Form = () => {
                   </div>
                   <h1
                     onClick={() => RemoveMember(WalletAddress)}
-                    className="text-[#F24848] text-lg cursor-pointer align-top -mt-2"
+                    className="text-[#F24848] text-lg cursor-pointer align-top "
                   >
                     Remove
                   </h1>
@@ -134,13 +152,16 @@ export const Form = () => {
             );
           })}
         </div>
-
-        <button
-          onClick={() => setSuccess(true)}
-          className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
-        >
-          Submit
-        </button>
+        {memberCount != 0 && (
+          <>
+            <button
+              onClick={() => setSuccess(true)}
+              className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
+            >
+              Submit
+            </button>
+          </>
+        )}
         {success && <AdminSuccess />}
         {form && (
           <>
@@ -148,7 +169,7 @@ export const Form = () => {
               <div className="w-full flex justify-center items-center">
                 <div className="fixed inset-0 bg-light-black backdrop-blur-sm">
                   <div className="flex justify-center items-center min-h-screen">
-                    <div className="h-[31rem] w-[28rem]  bg-[#0A1837] opacity-80 rounded-2xl px-10 formborder  ">
+                    <div className="h-[31rem] w-[28rem]  bg-[#0A1837] opacity-80 rounded-2xl px-10 formborder    ">
                       <h1 className="text-2xl text-white font-medium font-Outfit py-5">
                         Add a members
                       </h1>
