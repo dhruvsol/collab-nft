@@ -1,12 +1,18 @@
 import Image from "next/image";
-
-export const AdminSuccess = () => {
+interface ButtonProps {
+  setpopup: (a: boolean) => void;
+}
+export const AdminSuccess = ({ setpopup }: ButtonProps) => {
   return (
     <>
       <div className="z-40 fixed  transition-opacity w-full">
         <div className="w-full flex justify-center items-center">
           <div className="fixed inset-0 bg-light-black backdrop-blur-sm">
-            <div className="flex justify-center items-center min-h-screen">
+            <div className="relative flex justify-center items-center min-h-screen">
+              <div
+                onClick={() => setpopup(false)}
+                className="h-screen w-full absolute"
+              ></div>
               <div className="h-[31rem] w-[28rem]  bg-[#0A1837] opacity-80 rounded-2xl px-10 formborder  ">
                 <h1 className="flex justify-center text-5xl font-light text-white mt-10 font-Outfit ">
                   Successfull!

@@ -34,6 +34,9 @@ export const Form = () => {
     setMemberXP(0);
     setRole("");
   };
+  const setPopup = (a: boolean) => {
+    setSuccess(a);
+  };
   return (
     <>
       <section className="px-12 flex flex-col ">
@@ -162,7 +165,7 @@ export const Form = () => {
             </button>
           </>
         )}
-        {success && <AdminSuccess />}
+        {success && <AdminSuccess setpopup={setPopup} />}
         {form && (
           <>
             <div className="z-40 fixed  transition-opacity w-full">
