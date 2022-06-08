@@ -41,7 +41,7 @@ export const Form = () => {
     <>
       <section className="px-12 flex flex-col ">
         <h1 className="text-white py-5 text-2xl xl:text-3xl font-Outfit font-medium ">
-          Create Collab
+          Create Collab NFT
         </h1>
         <hr className=" border border-borderline" />
         <div className="flex flex-col justify-center space-y-3 pt-5">
