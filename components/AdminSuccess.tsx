@@ -27,7 +27,7 @@ export const AdminSuccess = ({ setpopup }: ButtonProps) => {
                 </div>
                 <div className="flex justify-between gap-x-5">
                   <button className="w-full rounded-3xl text-xl h-10 text-white font-Outfit font-normal bg-[#5436D2]">
-                    Claim
+                    Copy link
                   </button>
                   <button className=" w-full  rounded-3xl text-xl h-10 text-white font-Outfit font-normal bg-[#5436D2] ">
                     Get Your NFT
