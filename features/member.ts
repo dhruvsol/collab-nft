@@ -29,9 +29,13 @@ export const FormMemberSlice = createSlice({
       });
       state.memberCount -= 1;
     },
+    updateFull: (state: FormInfo, action: any) => {
+      state.MemberArray = action.payload;
+    },
   },
 });
 
-export const { removeMember, addNewMember } = FormMemberSlice.actions;
+export const { removeMember, addNewMember, updateFull } =
+  FormMemberSlice.actions;
 
 export default FormMemberSlice.reducer;

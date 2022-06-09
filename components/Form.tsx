@@ -20,6 +20,7 @@ export const Form = () => {
   const memberCount = useAppSelector((state) => state.FormReducers.memberCount);
 
   const dispatch = useAppDispatch();
+  console.log(Members);
   const AddMember = () => {
     const a = { Name, Role, WalletAddress, XpPercent };
     dispatch(addNewMember(a));

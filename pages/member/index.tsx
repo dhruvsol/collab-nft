@@ -1,9 +1,47 @@
 import Image from "next/image";
-import React from "react";
+import { useEffect, useState } from "react";
 import { Preview } from "../../components/Preview";
 import { NavbarMember } from "../../components/NavbarMember";
-
+import { useWallet } from "@solana/wallet-adapter-react";
+import { updateFull } from "../../features/member";
+import { useAppDispatch } from "../../store/hooks";
+import {
+  addCollabName,
+  addDescription,
+  addLeadName,
+} from "../../features/collabInfo";
 const MemberClaim = () => {
+  const [claim, setClaim] = useState<boolean>(true);
+  const { connected, publicKey } = useWallet();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const sendData = () => {
+      dispatch(
+        updateFull([
+          {
+            Name: "tripola ",
+            Role: "project oprations",
+            WalletAddress: "",
+            XpPercent: 11,
+          },
+          {
+            Name: "Dhruvraj",
+            Role: "Devloper",
+            WalletAddress: "",
+            XpPercent: 111,
+          },
+          { Name: "Bhvn", Role: "Devloper", WalletAddress: "", XpPercent: 111 },
+        ])
+      );
+      dispatch(addCollabName("DAO Talents Club"));
+      dispatch(addDescription("Building the web3 Talent economy."));
+      dispatch(addLeadName("dr.prk"));
+    };
+    if (connected) {
+      sendData();
+    }
+  }, [connected]);
+
   return (
     <>
       <div className="bgClaim">
@@ -16,22 +54,29 @@ const MemberClaim = () => {
             <hr className="w-2/5 border border-[#8BD1D2]" />
           </div>
           <Preview />
-          <div className="flex justify-center pt-5 ">
-            <button className="flex justify-center  items-center bg-[#6758E5FD] rounded-2xl w-72 h-10 text-white font-medium font-Outfit ">
-              Claim Your NFT
-            </button>
-          </div>
-          <div className="md:hidden flex justify-center">
-            <div className=" bg-[#FFDCDE] font-Outfit w-2/4 h-10 flex justify-center items-center rounded-xl text-md space-x-2">
-              <span>
-                <Image src="/emg.svg" alt="emg" width={24} height={24} />
-              </span>
-              <p>
-                Uh oh! I guess You weren’t the part of the collab. If you think
-                it’s a mistake try contacting your Admin.
-              </p>
+          {connected && (
+            <div>
+              {claim ? (
+                <div className="flex justify-center pt-5 ">
+                  <button className="flex justify-center  items-center bg-[#6758E5FD] rounded-2xl w-72 h-10 text-white font-medium font-Outfit ">
+                    Claim Your NFT
+                  </button>
+                </div>
+              ) : (
+                <div className="pt-5 flex justify-center">
+                  <div className=" bg-[#FFDCDE] font-Outfit w-2/4 h-10 flex justify-center items-center rounded-xl text-md space-x-2">
+                    <span>
+                      <Image src="/emg.svg" alt="emg" width={24} height={24} />
+                    </span>
+                    <p>
+                      Uh oh! I guess You weren’t the part of the collab. If you
+                      think it’s a mistake try contacting your Admin.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
