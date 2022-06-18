@@ -22,7 +22,6 @@ export const Landing = () => {
       Router.push("/reward");
     }
   }, [publicKey, connected]);
-  console.log(walletAddress);
 
   return (
     <>

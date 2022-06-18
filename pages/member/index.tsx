@@ -14,33 +14,6 @@ const MemberClaim = () => {
   const [claim, setClaim] = useState<boolean>(true);
   const { connected, publicKey } = useWallet();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const sendData = () => {
-      dispatch(
-        updateFull([
-          {
-            Name: "tripola ",
-            Role: "project oprations",
-            WalletAddress: "",
-            XpPercent: 11,
-          },
-          {
-            Name: "Dhruvraj",
-            Role: "Devloper",
-            WalletAddress: "",
-            XpPercent: 111,
-          },
-          { Name: "Bhvn", Role: "Devloper", WalletAddress: "", XpPercent: 111 },
-        ])
-      );
-      dispatch(addCollabName("DAO Talents Club"));
-      dispatch(addDescription("Building the web3 Talent economy."));
-      dispatch(addLeadName("dr.prk"));
-    };
-    if (connected) {
-      sendData();
-    }
-  }, [connected]);
 
   return (
     <>

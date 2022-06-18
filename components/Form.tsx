@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import member, { addNewMember, removeMember } from "../features/member";
 import { AdminSuccess } from "./AdminSuccess";
 import {
-  addAdminWallet,
   addCollabName,
   addDescription,
   addLeadName,
@@ -12,17 +11,24 @@ import {
 export const Form = () => {
   const [form, setForm] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
-  const [Name, setMemberName] = useState<string>("");
-  const [Role, setRole] = useState<string>("");
-  const [WalletAddress, setWalletAddress] = useState<string>("");
-  const [XpPercent, setMemberXP] = useState<number>(0);
+  const [name, setMemberName] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+  const [memberAddress, setWalletAddress] = useState<string>("");
+  const [xp, setMemberXP] = useState<number>(0);
+  const [ipfsHash, setHash] = useState<string>("0000000000");
+  const [minted, setMinted] = useState<boolean>(false);
+  const [nft, setNFT] = useState<string>("0x00000000");
+  // current value in reducers
   const Members = useAppSelector((state) => state.FormReducers.MemberArray);
   const memberCount = useAppSelector((state) => state.FormReducers.memberCount);
-
+  const Title = useAppSelector((state) => state.collabInfo.collabName);
+  const Description = useAppSelector((state) => state.collabInfo.Description);
+  const AdminWallet = useAppSelector((state) => state.collabInfo.AdminWallet);
+  const LeadName = useAppSelector((state) => state.collabInfo.LeadName);
   const dispatch = useAppDispatch();
-  console.log(Members);
+
   const AddMember = () => {
-    const a = { Name, Role, WalletAddress, XpPercent };
+    const a = { name, role, memberAddress, xp, ipfsHash, minted, nft };
     dispatch(addNewMember(a));
     setDefault();
   };
@@ -37,6 +43,18 @@ export const Form = () => {
   };
   const setPopup = (a: boolean) => {
     setSuccess(a);
+  };
+  const sendData = () => {
+    fetch(`https://${process.env.NEXT_PUBLIC_SERVERLESS}/reward`, {
+      method: "POST",
+      body: JSON.stringify({
+        adminAddress: AdminWallet,
+        title: Title,
+        leadName: LeadName,
+        description: Description,
+        members: Members,
+      }),
+    });
   };
   return (
     <>
@@ -113,40 +131,38 @@ export const Form = () => {
               </div>
             </>
           )}
-          {Members.map(({ WalletAddress, Name, XpPercent }) => {
+          {Members.map(({ memberAddress, name, xp }) => {
             return (
               <>
                 <div
-                  key={WalletAddress}
+                  key={memberAddress}
                   className="flex justify-between border-2 border-[#939393] px-3 py-2 rounded-xl my-3"
                 >
                   <div>
                     <h1 className="text-lg flex space-x-1">
                       <span className="text-[#636363]">Name:</span>
-                      <span className="text-white font-normal">{Name}</span>
+                      <span className="text-white font-normal">{name}</span>
                     </h1>
                     <h1 className="text-lg flex space-x-1">
                       <span className="text-[#636363]">Address:</span>
                       <span className="text-white font-normal">
-                        {WalletAddress === ""
+                        {memberAddress === ""
                           ? "N/A"
-                          : WalletAddress.slice(0, 4) +
+                          : memberAddress.slice(0, 4) +
                             "...." +
-                            WalletAddress.slice(
-                              WalletAddress.length - 4,
-                              WalletAddress.length
+                            memberAddress.slice(
+                              memberAddress.length - 4,
+                              memberAddress.length
                             )}
                       </span>
                     </h1>
                     <h1 className="text-lg flex space-x-1">
                       <span className="text-[#636363]">XPs:</span>
-                      <span className="text-white font-normal">
-                        {XpPercent}
-                      </span>
+                      <span className="text-white font-normal">{xp}</span>
                     </h1>
                   </div>
                   <h1
-                    onClick={() => RemoveMember(WalletAddress)}
+                    onClick={() => RemoveMember(memberAddress)}
                     className="text-[#F24848] text-lg cursor-pointer align-top "
                   >
                     Remove
@@ -159,7 +175,10 @@ export const Form = () => {
         {memberCount != 0 && (
           <>
             <button
-              onClick={() => setSuccess(true)}
+              onClick={() => {
+                setSuccess(true);
+                sendData();
+              }}
               className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
             >
               Submit

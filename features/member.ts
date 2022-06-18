@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface members {
-  Name: string;
-  WalletAddress: string;
-  Role: string;
-  XpPercent: number;
+  name: string;
+  memberAddress: string;
+  role: string;
+  xp: number;
+  nft: string;
+  ipfsHash: string;
+  minted: boolean;
 }
 interface FormInfo {
   MemberArray: Array<members>;
@@ -25,7 +28,7 @@ export const FormMemberSlice = createSlice({
     },
     removeMember: (state: FormInfo, action: any) => {
       state.MemberArray = state.MemberArray.filter((arr: members) => {
-        return arr.WalletAddress != action.payload;
+        return arr.memberAddress != action.payload;
       });
       state.memberCount -= 1;
     },
