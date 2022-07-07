@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.6.4",
     "@reduxjs/toolkit": "^1.8.2",
+    "@solana/spl-token": "^0.2.0",
     "@solana/wallet-adapter-base": "^0.9.5",
     "@solana/wallet-adapter-phantom": "^0.9.3",
     "@solana/wallet-adapter-react": "^0.15.5",
@@ -19,6 +20,7 @@
     "@solana/web3.js": "^1.43.2",
     "@types/dom-to-image": "^2.6.4",
     "dom-to-image": "^2.6.0",
+    "ipfs-http-client": "^57.0.3",
     "next": "12.1.6",
     "party-js": "^2.1.2",
     "react": "18.1.0",
