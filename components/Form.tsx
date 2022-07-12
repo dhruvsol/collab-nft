@@ -1,22 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { BsExclamationCircleFill } from 'react-icons/bs'
-import {
-	createMint,
-	mintTo,
-	getOrCreateAssociatedTokenAccount,
-	Account,
-	getAccount,
-	getMint,
-	transfer,
-} from '@solana/spl-token'
-import {
-	clusterApiUrl,
-	Connection,
-	Keypair,
-	LAMPORTS_PER_SOL,
-	PublicKey,
-} from '@solana/web3.js'
 import { create } from 'ipfs-http-client'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import member, { addNewMember, removeMember } from '../features/member'
@@ -26,21 +10,7 @@ import {
 	addDescription,
 	addLeadName,
 } from '../features/collabInfo'
-
-const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
-
-async function createWalletAndAirdrop() {
-	const wallet = Keypair.generate()
-
-	const airdropSignature = await connection.requestAirdrop(
-		wallet.publicKey,
-		LAMPORTS_PER_SOL
-	)
-
-	await connection.confirmTransaction(airdropSignature)
-
-	return wallet
-}
+import { mintAndTransfer } from '../features/mintAndTransfer'
 
 export const Form = () => {
 	const { publicKey, connected, connect } = useWallet()
@@ -88,76 +58,7 @@ export const Form = () => {
 	}
 
 	const sendData = async () => {
-		const wallet = await createWalletAndAirdrop()
-
-		const mint = await createMint(
-			connection,
-			wallet,
-			wallet.publicKey,
-			null,
-			9
-		)
-
-		const associatedTokenAccount = await getOrCreateAssociatedTokenAccount(
-			connection,
-			wallet,
-			mint,
-			wallet.publicKey
-		)
-
-		const signature = await mintTo(
-			connection,
-			wallet,
-			mint,
-			associatedTokenAccount.address,
-			wallet,
-			memberCount
-		)
-
-		const toWallet = new PublicKey(AdminWallet)
-
-		const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-			connection,
-			wallet,
-			mint,
-			toWallet
-		)
-
-		const transferSignature = await transfer(
-			connection,
-			wallet,
-			associatedTokenAccount.address,
-			toTokenAccount.address,
-			wallet.publicKey,
-			1
-		)
-
-		Members.map(async ({ memberAddress }) => {
-			const toWallet = new PublicKey(memberAddress)
-
-			const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-				connection,
-				wallet,
-				mint,
-				toWallet
-			)
-
-			const transferSignature = await transfer(
-				connection,
-				wallet,
-				associatedTokenAccount.address,
-				toTokenAccount.address,
-				wallet.publicKey,
-				1
-			)
-		})
-
-		const accountInfo = await getAccount(
-			connection,
-			associatedTokenAccount.address
-		)
-
-		const mintInfo = await getMint(connection, mint)
+		mintAndTransfer(AdminWallet, memberCount, Members)
 	}
 	return (
 		<>
