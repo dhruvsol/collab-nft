@@ -54,6 +54,7 @@ export const Form = () => {
 	const [ipfsHash, setHash] = useState<string>('0000000000')
 	const [minted, setMinted] = useState<boolean>(false)
 	const [nft, setNFT] = useState<string>('0x00000000')
+
 	// current value in reducers
 	const Members = useAppSelector((state) => state.FormReducers.MemberArray)
 	const memberCount = useAppSelector(
@@ -103,7 +104,6 @@ export const Form = () => {
 			mint,
 			wallet.publicKey
 		)
-		console.log(AdminWallet)
 
 		const signature = await mintTo(
 			connection,
@@ -114,8 +114,6 @@ export const Form = () => {
 			memberCount
 		)
 
-		console.log(`Minted ${memberCount} tokens to ${wallet.publicKey}`)
-
 		const toWallet = new PublicKey(AdminWallet)
 
 		const toTokenAccount = await getOrCreateAssociatedTokenAccount(
@@ -125,8 +123,6 @@ export const Form = () => {
 			toWallet
 		)
 
-		console.log(`toTokenAccount: ${toTokenAccount.address}`)
-
 		const transferSignature = await transfer(
 			connection,
 			wallet,
@@ -135,8 +131,6 @@ export const Form = () => {
 			wallet.publicKey,
 			1
 		)
-
-		console.log(`transferSignature: ${transferSignature}`)
 
 		Members.map(async ({ memberAddress }) => {
 			const toWallet = new PublicKey(memberAddress)
@@ -148,8 +142,6 @@ export const Form = () => {
 				toWallet
 			)
 
-			console.log(`toTokenAccount: ${toTokenAccount.address}`)
-
 			const transferSignature = await transfer(
 				connection,
 				wallet,
@@ -158,35 +150,14 @@ export const Form = () => {
 				wallet.publicKey,
 				1
 			)
-
-			console.log(`transferSignature: ${transferSignature}`)
 		})
-
-		// try {
-		// 	let transaction = new Transaction().add(
-		// 		createSetAuthorityInstruction(
-		// 			mint,
-		// 			wallet.publicKey,
-		// 			AuthorityType.MintTokens,
-		// 			null
-		// 		)
-		// 	)
-
-		// 	await sendAndConfirmTransaction(connection, transaction, [wallet])
-		// } catch (e) {
-		// 	console.log(e)
-		// }
 
 		const accountInfo = await getAccount(
 			connection,
 			associatedTokenAccount.address
 		)
 
-		console.log(accountInfo.amount)
-		// 1
 		const mintInfo = await getMint(connection, mint)
-
-		console.log(mintInfo)
 	}
 	return (
 		<>

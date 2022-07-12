@@ -6,12 +6,14 @@ interface collab {
 	Description: string
 	AdminWallet: string
 }
+
 const initialState: collab = {
 	collabName: '',
 	LeadName: '',
 	Description: '',
 	AdminWallet: '',
 }
+
 export const CollabInfo = createSlice({
 	name: 'collab',
 	initialState,
@@ -30,6 +32,8 @@ export const CollabInfo = createSlice({
 		},
 	},
 })
+
 export const { addAdminWallet, addCollabName, addDescription, addLeadName } =
 	CollabInfo.actions
+
 export default CollabInfo.reducer

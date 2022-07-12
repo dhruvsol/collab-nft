@@ -16,7 +16,6 @@ export const Landing = () => {
 
 	const dispatch = useAppDispatch()
 	const { publicKey, connected, connect } = useWallet()
-	// console.log(connect)
 
 	useEffect(() => {
 		dispatch(addAdminWallet(publicKey?.toString()))

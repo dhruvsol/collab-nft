@@ -1,7 +1,9 @@
 import Image from 'next/image'
+
 interface ButtonProps {
 	setpopup: (a: boolean) => void
 }
+
 export const AdminSuccess = ({ setpopup }: ButtonProps) => {
 	return (
 		<>

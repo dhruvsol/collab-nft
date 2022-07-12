@@ -25,7 +25,6 @@ export const Preview = () => {
 		.then(function (dataUrl: any) {
 			var img = new Image()
 			img.src = dataUrl
-			// console.log(img.src);
 		})
 		.catch(function (error: any) {
 			console.error('oops, something went wrong!', error)

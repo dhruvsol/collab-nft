@@ -18,6 +18,7 @@ const initialState: FormInfo = {
 	memberCount: 0,
 	MemberArray: [],
 }
+
 export const FormMemberSlice = createSlice({
 	name: 'FormSlice',
 	initialState,
