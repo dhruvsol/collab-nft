@@ -1,13 +1,13 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next'
 
-import { Landing } from "../components/Landing";
+import { Landing } from '../components/Landing'
 
 const Home: NextPage = () => {
-  return (
-    <>
-      <Landing />
-    </>
-  );
-};
+	return (
+		<>
+			<Landing />
+		</>
+	)
+}
 
-export default Home;
+export default Home
