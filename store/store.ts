@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import FormReducers from '../features/member'
 import CollabInfo from '../features/collabInfo'
-import PreviewUrl from '../features/preview'
+import PreviewInfo from '../features/previewInfo'
 export const store = configureStore({
 	reducer: {
 		FormReducers: FormReducers,
 		collabInfo: CollabInfo,
-		previewUrl: PreviewUrl,
+		previewInfo: PreviewInfo,
 	},
 })
 

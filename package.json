@@ -20,6 +20,7 @@
     "@solana/wallet-adapter-wallets": "^0.16.8",
     "@solana/web3.js": "^1.48.0",
     "@types/dom-to-image": "^2.6.4",
+    "arweave": "^1.11.4",
     "dom-to-image": "^2.6.0",
     "ipfs-http-client": "^57.0.3",
     "next": "12.2.2",

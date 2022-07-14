@@ -2,7 +2,7 @@ import { GoPrimitiveDot } from 'react-icons/go'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import domtoimage from 'dom-to-image'
 import { useRef, useState } from 'react'
-import { updatePreviewUrl } from '../features/preview'
+import { updatePreviewUrl } from '../features/previewInfo'
 interface Props {
 	LeadName: string
 	description: string

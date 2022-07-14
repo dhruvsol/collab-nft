@@ -8,7 +8,7 @@ const initialState: preview = {
 	previewUrl: '',
 }
 
-export const PreviewUrl = createSlice({
+export const PreviewInfo = createSlice({
 	name: 'preview',
 	initialState,
 	reducers: {
@@ -18,6 +18,6 @@ export const PreviewUrl = createSlice({
 	},
 })
 
-export const { updatePreviewUrl } = PreviewUrl.actions
+export const { updatePreviewUrl } = PreviewInfo.actions
 
-export default PreviewUrl.reducer
+export default PreviewInfo.reducer
