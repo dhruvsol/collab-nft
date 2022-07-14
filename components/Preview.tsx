@@ -1,13 +1,14 @@
 import { GoPrimitiveDot } from 'react-icons/go'
-import { useAppSelector } from '../store/hooks'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 import domtoimage from 'dom-to-image'
-
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import { updatePreviewUrl } from '../features/preview'
 interface Props {
 	LeadName: string
 	description: string
 	memberArray: Array<any>
 }
+
 export const Preview = () => {
 	const leadName = useAppSelector((state) => state.collabInfo.LeadName)
 	const desc = useAppSelector((state) => state.collabInfo.Description)
@@ -18,12 +19,14 @@ export const Preview = () => {
 		(state) => state.FormReducers.memberCount
 	)
 	const collabTitle = useAppSelector((state) => state.collabInfo.collabName)
+	const dispatch = useAppDispatch()
 	const node = useRef<HTMLDivElement>(null!)
 
 	domtoimage
 		.toPng(node.current)
-		.then(function (dataUrl: any) {
-			var img = new Image()
+		.then(function makeImage(dataUrl: any) {
+			const img = new Image()
+			dispatch(updatePreviewUrl(dataUrl))
 			img.src = dataUrl
 		})
 		.catch(function (error: any) {

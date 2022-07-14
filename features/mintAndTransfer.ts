@@ -6,6 +6,7 @@ import {
 	getAccount,
 	getMint,
 	transfer,
+	TOKEN_PROGRAM_ID,
 } from '@solana/spl-token'
 import {
 	clusterApiUrl,
@@ -19,29 +20,23 @@ const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
 
 async function createWalletAndAirdrop() {
 	const wallet = Keypair.generate()
-
 	const airdropSignature = await connection.requestAirdrop(
 		wallet.publicKey,
 		LAMPORTS_PER_SOL
 	)
-
 	await connection.confirmTransaction(airdropSignature)
-
 	return wallet
 }
 
 export const mintAndTransfer = async (memberCount, AdminWallet, Members) => {
 	const wallet = await createWalletAndAirdrop()
-
 	const mint = await createMint(connection, wallet, wallet.publicKey, null, 9)
-
 	const associatedTokenAccount = await getOrCreateAssociatedTokenAccount(
 		connection,
 		wallet,
 		mint,
 		wallet.publicKey
 	)
-
 	const signature = await mintTo(
 		connection,
 		wallet,
@@ -50,16 +45,13 @@ export const mintAndTransfer = async (memberCount, AdminWallet, Members) => {
 		wallet,
 		memberCount
 	)
-
 	const toWallet = new PublicKey(AdminWallet)
-
 	const toTokenAccount = await getOrCreateAssociatedTokenAccount(
 		connection,
 		wallet,
 		mint,
 		toWallet
 	)
-
 	const transferSignature = await transfer(
 		connection,
 		wallet,
@@ -68,7 +60,6 @@ export const mintAndTransfer = async (memberCount, AdminWallet, Members) => {
 		wallet.publicKey,
 		1
 	)
-
 	Members.map(async ({ memberAddress }) => {
 		const toWallet = new PublicKey(memberAddress)
 
@@ -78,7 +69,6 @@ export const mintAndTransfer = async (memberCount, AdminWallet, Members) => {
 			mint,
 			toWallet
 		)
-
 		const transferSignature = await transfer(
 			connection,
 			wallet,
@@ -88,11 +78,9 @@ export const mintAndTransfer = async (memberCount, AdminWallet, Members) => {
 			1
 		)
 	})
-
 	const accountInfo = await getAccount(
 		connection,
 		associatedTokenAccount.address
 	)
-
 	const mintInfo = await getMint(connection, mint)
 }

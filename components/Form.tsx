@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { BsExclamationCircleFill } from 'react-icons/bs'
-import { create } from 'ipfs-http-client'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import member, { addNewMember, removeMember } from '../features/member'
 import { AdminSuccess } from './AdminSuccess'
@@ -11,6 +10,7 @@ import {
 	addLeadName,
 } from '../features/collabInfo'
 import { mintAndTransfer } from '../features/mintAndTransfer'
+import { collabNftMetadata } from '../features/mintNft'
 
 export const Form = () => {
 	const { publicKey, connected, connect } = useWallet()
@@ -58,6 +58,7 @@ export const Form = () => {
 	}
 
 	const sendData = async () => {
+		collabNftMetadata(Title, Description)
 		mintAndTransfer(AdminWallet, memberCount, Members)
 	}
 	return (
