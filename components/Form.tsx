@@ -18,7 +18,12 @@ import {
 	airdropSol,
 } from '../features/mintNft'
 import { time } from 'console'
-import { useMetaplexFileFromBrowser } from '@metaplex-foundation/js'
+import {
+	Metaplex,
+	mockStorage,
+	walletAdapterIdentity,
+} from '@metaplex-foundation/js'
+import { Connection, clusterApiUrl } from '@solana/web3.js'
 
 export const Form = () => {
 	const { publicKey, connected, connect } = useWallet()
@@ -44,6 +49,13 @@ export const Form = () => {
 	const LeadName = useAppSelector((state) => state.collabInfo.LeadName)
 	const PreviewUrl = useAppSelector((state) => state.previewInfo.previewUrl)
 	const dispatch = useAppDispatch()
+
+	const wallet = useWallet()
+
+	const connection = new Connection(clusterApiUrl('devnet'))
+	const metaplex = Metaplex.make(connection)
+		.use(walletAdapterIdentity(wallet))
+		.use(mockStorage())
 
 	const AddMember = () => {
 		const a = { name, role, memberAddress, xp, ipfsHash, minted, nft }
@@ -73,15 +85,16 @@ export const Form = () => {
 		// 	PreviewUrl.replace('data:image/png;base64,', ''),
 		// 	'base64'
 		// )
-		const solSig = await airdropSol()
+		const solSig = await airdropSol(wallet, connection)
 		const metadataUri = await collabNftMetadata(
 			Title,
 			Description,
-			ipfsImage
+			ipfsImage,
+			metaplex
 		)
 
 		// console.log(metadataUri, typeof Title)
-		const nft = await creteNfts(metadataUri.uri, Title)
+		const nft = await creteNfts(metadataUri.uri, Title, metaplex)
 		console.log(nft)
 		// const nftMetadata = mintAndTransfer(AdminWallet, memberCount, Members)
 	}
@@ -226,9 +239,9 @@ export const Form = () => {
 				{memberCount != 0 && (
 					<>
 						<button
-							onClick={() => {
+							onClick={async () => {
+								await sendData()
 								setSuccess(true)
-								sendData()
 							}}
 							className='sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white'
 						>

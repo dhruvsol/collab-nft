@@ -5,6 +5,7 @@ import {
 	mockStorage,
 	useMetaplexFileFromBrowser,
 	BundlrStorageDriver,
+	walletAdapterIdentity,
 } from '@metaplex-foundation/js'
 import {
 	Connection,
@@ -13,13 +14,14 @@ import {
 	PublicKey,
 	LAMPORTS_PER_SOL,
 } from '@solana/web3.js'
+import { useWallet } from '@solana/wallet-adapter-react'
 import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
 import Arweave from 'arweave'
 
-const connection = new Connection(clusterApiUrl('devnet'))
-const wallet = Keypair.generate()
+// const connection = new Connection(clusterApiUrl('devnet'))
+// const wallet = Keypair.generate()
 
-async function airdropSol() {
+async function airdropSol(wallet, connection) {
 	const airdropSignature = await connection.requestAirdrop(
 		wallet.publicKey,
 		LAMPORTS_PER_SOL
@@ -27,10 +29,6 @@ async function airdropSol() {
 	const rx = await connection.confirmTransaction(airdropSignature)
 	console.log('sols airdropped', rx)
 }
-
-const metaplex = Metaplex.make(connection)
-	.use(keypairIdentity(wallet))
-	.use(mockStorage())
 
 async function uploadImageToArweave(dataSrc) {
 	const arweave = Arweave.init({})
@@ -79,7 +77,7 @@ async function uploadImage(dataSrc) {
 	return url
 }
 
-async function collabNftMetadata(name, description, ipfsImage) {
+async function collabNftMetadata(name, description, ipfsImage, metaplex) {
 	try {
 		const { uri } = await metaplex.nfts().uploadMetadata({
 			name: name,
@@ -90,10 +88,10 @@ async function collabNftMetadata(name, description, ipfsImage) {
 		return { uri }
 	} catch (error) {
 		console.error('Metadata upload error ', error)
-	} // const bundlrStorage = metaplex.storage().driver() as BundlrStorageDriver
+	}
 }
 
-async function creteNfts(metadata, title) {
+async function creteNfts(metadata, title, metaplex) {
 	const { nft } = await metaplex.nfts().create({
 		uri: metadata,
 		name: title,
