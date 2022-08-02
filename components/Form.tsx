@@ -14,6 +14,8 @@ import {
 	uploadImage,
 	uploadImageToArweave,
 	collabNftMetadata,
+	creteNfts,
+	airdropSol,
 } from '../features/mintNft'
 import { time } from 'console'
 import { useMetaplexFileFromBrowser } from '@metaplex-foundation/js'
@@ -65,17 +67,23 @@ export const Form = () => {
 	}
 
 	const sendData = async () => {
-		// const ipfsImage = await uploadImage(PreviewUrl)
+		const ipfsImage = await uploadImage(PreviewUrl)
 		// const arweaveImage = await uploadImageToArweave(PreviewUrl)
-		// console.log('ipfsImage--->', ipfsImage)
-		// console.log('arweaveImage--->', arweaveImage)
 		// const base64toBuffer = Buffer.from(
 		// 	PreviewUrl.replace('data:image/png;base64,', ''),
 		// 	'base64'
 		// )
-		await collabNftMetadata(Title, Description, '')
-		// console.log('hello')
-		const nftMetadata = mintAndTransfer(AdminWallet, memberCount, Members)
+		const solSig = await airdropSol()
+		const metadataUri = await collabNftMetadata(
+			Title,
+			Description,
+			ipfsImage
+		)
+
+		// console.log(metadataUri, typeof Title)
+		const nft = await creteNfts(metadataUri.uri, Title)
+		console.log(nft)
+		// const nftMetadata = mintAndTransfer(AdminWallet, memberCount, Members)
 	}
 	return (
 		<>

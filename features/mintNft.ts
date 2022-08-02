@@ -2,11 +2,35 @@ import {
 	Metaplex,
 	keypairIdentity,
 	bundlrStorage,
+	mockStorage,
 	useMetaplexFileFromBrowser,
+	BundlrStorageDriver,
 } from '@metaplex-foundation/js'
-import { Connection, clusterApiUrl, Keypair, PublicKey } from '@solana/web3.js'
+import {
+	Connection,
+	clusterApiUrl,
+	Keypair,
+	PublicKey,
+	LAMPORTS_PER_SOL,
+} from '@solana/web3.js'
 import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
 import Arweave from 'arweave'
+
+const connection = new Connection(clusterApiUrl('devnet'))
+const wallet = Keypair.generate()
+
+async function airdropSol() {
+	const airdropSignature = await connection.requestAirdrop(
+		wallet.publicKey,
+		LAMPORTS_PER_SOL
+	)
+	const rx = await connection.confirmTransaction(airdropSignature)
+	console.log('sols airdropped', rx)
+}
+
+const metaplex = Metaplex.make(connection)
+	.use(keypairIdentity(wallet))
+	.use(mockStorage())
 
 async function uploadImageToArweave(dataSrc) {
 	const arweave = Arweave.init({})
@@ -30,6 +54,8 @@ async function uploadImageToArweave(dataSrc) {
 			`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
 		)
 	}
+
+	// console.log('uploaded to arwaeve', signedTxn)
 }
 
 async function uploadImage(dataSrc) {
@@ -50,29 +76,37 @@ async function uploadImage(dataSrc) {
 	const path = result.path
 	const url = `https://ipfs.infura.io/ipfs/${path}`
 
-	console.log('cid--->', cid)
-	console.log('url--->', url)
-
 	return url
 }
 
 async function collabNftMetadata(name, description, ipfsImage) {
-	const connection = new Connection(clusterApiUrl('devnet'))
-	const wallet = Keypair.generate()
-	const metaplex = new Metaplex(connection).use(keypairIdentity(wallet))
-
-	console.log('name--->', name)
-	console.log('description--->', description)
-	console.log('image--->', ipfsImage)
-	const { uri, metadata } = await metaplex.nfts().uploadMetadata({
-		name: name,
-		description: description,
-		image: 'https://bafkreidmuo5z5e67mnap4jz6l4ckizsgquu536wvkkotvxb5a5w6idfubm.ipfs.nftstorage.link/',
-	})
-
-	console.log('uri--->', uri)
-
-	return { uri, metadata }
+	try {
+		const { uri } = await metaplex.nfts().uploadMetadata({
+			name: name,
+			description: description,
+			image: 'https://bafkreidmuo5z5e67mnap4jz6l4ckizsgquu536wvkkotvxb5a5w6idfubm.ipfs.nftstorage.link/',
+		})
+		console.log('metadata uploaded', uri)
+		return { uri }
+	} catch (error) {
+		console.error('Metadata upload error ', error)
+	} // const bundlrStorage = metaplex.storage().driver() as BundlrStorageDriver
 }
 
-export { uploadImage, uploadImageToArweave, collabNftMetadata }
+async function creteNfts(metadata, title) {
+	const { nft } = await metaplex.nfts().create({
+		uri: metadata,
+		name: title,
+		sellerFeeBasisPoints: 0,
+	})
+
+	return { nft }
+}
+
+export {
+	uploadImage,
+	uploadImageToArweave,
+	collabNftMetadata,
+	creteNfts,
+	airdropSol,
+}
