@@ -1,12 +1,12 @@
-import {
-	Metaplex,
-	keypairIdentity,
-	bundlrStorage,
-	mockStorage,
-	useMetaplexFileFromBrowser,
-	BundlrStorageDriver,
-	walletAdapterIdentity,
-} from '@metaplex-foundation/js'
+// import {
+// 	Metaplex,
+// 	keypairIdentity,
+// 	bundlrStorage,
+// 	mockStorage,
+// 	useMetaplexFileFromBrowser,
+// 	BundlrStorageDriver,
+// 	walletAdapterIdentity,
+// } from '@metaplex-foundation/js'
 import {
 	Connection,
 	clusterApiUrl,
@@ -14,12 +14,8 @@ import {
 	PublicKey,
 	LAMPORTS_PER_SOL,
 } from '@solana/web3.js'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
 import Arweave from 'arweave'
-
-// const connection = new Connection(clusterApiUrl('devnet'))
-// const wallet = Keypair.generate()
 
 async function airdropSol(wallet, connection) {
 	const airdropSignature = await connection.requestAirdrop(

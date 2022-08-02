@@ -22,6 +22,7 @@ import {
 	Metaplex,
 	mockStorage,
 	walletAdapterIdentity,
+	bundlrStorage,
 } from '@metaplex-foundation/js'
 import { Connection, clusterApiUrl } from '@solana/web3.js'
 
@@ -80,11 +81,6 @@ export const Form = () => {
 
 	const sendData = async () => {
 		const ipfsImage = await uploadImage(PreviewUrl)
-		// const arweaveImage = await uploadImageToArweave(PreviewUrl)
-		// const base64toBuffer = Buffer.from(
-		// 	PreviewUrl.replace('data:image/png;base64,', ''),
-		// 	'base64'
-		// )
 		const solSig = await airdropSol(wallet, connection)
 		const metadataUri = await collabNftMetadata(
 			Title,
