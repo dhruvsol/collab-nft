@@ -23,8 +23,9 @@ import {
 	mockStorage,
 	walletAdapterIdentity,
 	bundlrStorage,
+	IPFS,
 } from '@metaplex-foundation/js'
-import { Connection, clusterApiUrl } from '@solana/web3.js'
+import { Connection, clusterApiUrl, PublicKey } from '@solana/web3.js'
 
 export const Form = () => {
 	const { publicKey, connected, connect } = useWallet()
@@ -53,15 +54,27 @@ export const Form = () => {
 
 	const wallet = useWallet()
 
-	const connection = new Connection(clusterApiUrl('devnet'))
+	const connection = new Connection('https://solana-devnet.g.alchemy.com/v2/ueL5_rfSA-5XWPHsXCVBZ9A-CsqD0Dqe')
 	const metaplex = Metaplex.make(connection)
 		.use(walletAdapterIdentity(wallet))
-		.use(mockStorage())
+		// .use(mockStorage())
+		
 
 	const AddMember = () => {
 		const a = { name, role, memberAddress, xp, ipfsHash, minted, nft }
-		dispatch(addNewMember(a))
-		setDefault()
+		try{
+			const isValidWallet = PublicKey.isOnCurve(new PublicKey(a.memberAddress));
+			if(isValidWallet)
+			{
+				dispatch(addNewMember(a))
+				setDefault()
+			}
+		}
+		catch(error){
+			alert("Member's wallet is invalid...")
+			setDefault()
+		}
+		
 	}
 
 	const RemoveMember = (address: string) => {
@@ -81,7 +94,9 @@ export const Form = () => {
 
 	const sendData = async () => {
 		const ipfsImage = await uploadImage(PreviewUrl)
-		const solSig = await airdropSol(wallet, connection)
+		console.log("IPFS IMG ==>", ipfsImage);
+		
+		// const solSig = await airdropSol(wallet, connection)
 		const metadataUri = await collabNftMetadata(
 			Title,
 			Description,
@@ -89,9 +104,9 @@ export const Form = () => {
 			metaplex
 		)
 
-		// console.log(metadataUri, typeof Title)
-		const nft = await creteNfts(metadataUri.uri, Title, metaplex)
-		console.log(nft)
+		console.log("Meta Uri",metadataUri)
+		// const nft = await creteNfts(metadataUri.uri, Title, metaplex)
+		// console.log(nft)
 		// const nftMetadata = mintAndTransfer(AdminWallet, memberCount, Members)
 	}
 	return (
