@@ -27,7 +27,7 @@ import {
   MetaplexFile,
   toMetaplexFileFromBrowser,
 } from "@metaplex-foundation/js";
-import { Connection, clusterApiUrl } from "@solana/web3.js";
+import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 
 export const Form = () => {
   const { publicKey, connected, connect } = useWallet();
@@ -69,8 +69,18 @@ export const Form = () => {
 
   const AddMember = () => {
     const a = { name, role, memberAddress, xp, ipfsHash, minted, nft };
-    dispatch(addNewMember(a));
-    setDefault();
+	try{
+		const isValidWallet = PublicKey.isOnCurve(new PublicKey(a.memberAddress));
+		if(isValidWallet)
+		{
+			dispatch(addNewMember(a))
+			setDefault()
+		}
+	}
+	catch(error){
+		alert("Member's wallet is invalid...")
+		setDefault()
+	}
   };
 
   const RemoveMember = (address: string) => {
