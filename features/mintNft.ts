@@ -16,6 +16,8 @@ import {
 } from '@solana/web3.js'
 import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
 import Arweave from 'arweave'
+import { Metaplex, Nft } from '@metaplex-foundation/js'
+
 
 async function airdropSol(wallet, connection) {
 	const airdropSignature = await connection.requestAirdrop(
@@ -27,29 +29,42 @@ async function airdropSol(wallet, connection) {
 }
 
 async function uploadImageToArweave(dataSrc) {
-	const arweave = Arweave.init({})
-	const key = await arweave.wallets.generate()
-	const transaction = await arweave.createTransaction(
-		{
-			data: Buffer.from(
-				dataSrc.replace('data:image/png;base64,', ''),
-				'base64'
-			),
-		},
-		key
-	)
-	console.log(transaction)
-	const signedTxn = await arweave.transactions.sign(transaction, key)
-	console.log(signedTxn)
-	let uploader = await arweave.transactions.getUploader(transaction)
-	while (!uploader.isComplete) {
-		await uploader.uploadChunk()
-		console.log(
-			`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-		)
-	}
+	// const arweave = Arweave.init({})
+	// const key = await arweave.wallets.generate()
+	// const transaction = await arweave.createTransaction(
+	// 	{
+	// 		data: Buffer.from(
+	// 			dataSrc.replace('data:image/png;base64,', ''),
+	// 			'base64'
+	// 		),
+	// 	},
+	// 	key
+	// )
+	// console.log(transaction)
+	// const signedTxn = await arweave.transactions.sign(transaction, key)
+	// console.log(signedTxn)
+	// let uploader = await arweave.transactions.getUploader(transaction)
+	// while (!uploader.isComplete) {
+	// 	await uploader.uploadChunk()
+	// 	console.log(
+	// 		`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
+	// 	)
+	// }
 
 	// console.log('uploaded to arwaeve', signedTxn)
+	const image = dataSrc.replace('data:image/png;base64,', '');
+	const response = await fetch("http://localhost:5001/api/uploadtoarweave", {
+		method: "POST",
+		body: JSON.stringify({
+			x: image
+		}),
+		headers: {
+			'Content-Type': 'application/json'
+		  },
+	})
+	const uri = (await response.json()).uri
+    console.log(uri)
+	return uri;
 }
 
 async function uploadImage(dataSrc) {
@@ -71,15 +86,15 @@ async function uploadImage(dataSrc) {
 	const url = `https://ipfs.infura.io/ipfs/${path}`
 
 	return url
-}
+}	
 
-async function collabNftMetadata(name, description, ipfsImage, metaplex) {
+async function collabNftMetadata(name: string, description: string, ipfsImage: any, metaplex: Metaplex) {
 	try {
 		const { uri } = await metaplex.nfts().uploadMetadata({
 			name: name,
 			description: description,
-			image: 'https://bafkreidmuo5z5e67mnap4jz6l4ckizsgquu536wvkkotvxb5a5w6idfubm.ipfs.nftstorage.link/',
-		})
+			image: 'https://collab-nft.infura-ipfs.io/ipfs/QmUEhyi65WGaEUW9HmSWmzH91HeUMiCzin3Eqmj3zxDWia',
+		}).run();
 		console.log('metadata uploaded', uri)
 		return { uri }
 	} catch (error) {
@@ -87,14 +102,25 @@ async function collabNftMetadata(name, description, ipfsImage, metaplex) {
 	}
 }
 
-async function creteNfts(metadata, title, metaplex) {
-	const { nft } = await metaplex.nfts().create({
+async function creteNfts(metadata: any, title: string, metaplex: Metaplex, members) {	
+	console.log(members);
+	const owner = new PublicKey("AGdZqUDzmXZYMkmv17d2MevwsNyNYkLjUsbq19eZcawg");
+	const anotherOwner = new PublicKey("E5YMfUvCghB6Ynjx1kAREceoUdGn4SjATp9ohzKwua6J");
+	const first = await metaplex.nfts().create({
 		uri: metadata,
+		tokenOwner: owner, 
 		name: title,
 		sellerFeeBasisPoints: 0,
-	})
+	}).run();
+	const x = await metaplex.nfts().create({
+		uri: metadata,
+		tokenOwner: anotherOwner, 
+		name: title,
+		sellerFeeBasisPoints: 0,
+	}).run();
+	console.log(x);
 
-	return { nft }
+	return { first }
 }
 
 export {
