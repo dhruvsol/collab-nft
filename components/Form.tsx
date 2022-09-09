@@ -24,6 +24,8 @@ import {
   walletAdapterIdentity,
   bundlrStorage,
   BundlrStorageDriver,
+  MetaplexFile,
+  toMetaplexFileFromBrowser,
 } from "@metaplex-foundation/js";
 import { Connection, clusterApiUrl } from "@solana/web3.js";
 
@@ -86,26 +88,30 @@ export const Form = () => {
     setSuccess(a);
   };
 
+  function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
+}
+
   const sendData = async () => {
-	const ipfsImage = "";
 	const bundlrStorage = metaplex.storage().driver() as BundlrStorageDriver;
 	(await bundlrStorage.bundlr()).fund(1000);
-    // const ipfsImage = "";
-    console.log("hey");
     const solSig = await airdropSol(wallet, connection);
+	var file = dataURLtoFile(PreviewUrl, 'a.png');
+	const files: MetaplexFile = await toMetaplexFileFromBrowser(file);
+
     const metadataUri = await collabNftMetadata(
       Title,
       Description,
-      ipfsImage,
+      files,
       metaplex
     );
-
-    // console.log(metadataUri, typeof Title)
-    console.log("hey");
     console.log(metadataUri);
-    const nft = await creteNfts(metadataUri.uri, Title, metaplex, Members);
-    console.log(nft);
-    // const nftMetadata = mintAndTransfer(AdminWallet, memberCount, Members)
+    await creteNfts(metadataUri.uri, Title, metaplex, Members);
   };
   return (
     <>

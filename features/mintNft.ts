@@ -13,10 +13,11 @@ import {
 	Keypair,
 	PublicKey,
 	LAMPORTS_PER_SOL,
+	PublicKeyInitData,
 } from '@solana/web3.js'
 import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
 import Arweave from 'arweave'
-import { Metaplex, Nft } from '@metaplex-foundation/js'
+import { CreateNftOutput, Metaplex, MetaplexFile, Nft } from '@metaplex-foundation/js'
 
 
 async function airdropSol(wallet, connection) {
@@ -88,12 +89,12 @@ async function uploadImage(dataSrc) {
 	return url
 }	
 
-async function collabNftMetadata(name: string, description: string, ipfsImage: any, metaplex: Metaplex) {
+async function collabNftMetadata(name: string, description: string, ipfsImage: MetaplexFile, metaplex: Metaplex) {
 	try {
 		const { uri } = await metaplex.nfts().uploadMetadata({
 			name: name,
 			description: description,
-			image: 'https://collab-nft.infura-ipfs.io/ipfs/QmUEhyi65WGaEUW9HmSWmzH91HeUMiCzin3Eqmj3zxDWia',
+			image: ipfsImage,
 		}).run();
 		console.log('metadata uploaded', uri)
 		return { uri }
@@ -103,24 +104,17 @@ async function collabNftMetadata(name: string, description: string, ipfsImage: a
 }
 
 async function creteNfts(metadata: any, title: string, metaplex: Metaplex, members) {	
-	console.log(members);
-	const owner = new PublicKey("AGdZqUDzmXZYMkmv17d2MevwsNyNYkLjUsbq19eZcawg");
-	const anotherOwner = new PublicKey("E5YMfUvCghB6Ynjx1kAREceoUdGn4SjATp9ohzKwua6J");
-	const first = await metaplex.nfts().create({
-		uri: metadata,
-		tokenOwner: owner, 
-		name: title,
-		sellerFeeBasisPoints: 0,
-	}).run();
-	const x = await metaplex.nfts().create({
-		uri: metadata,
-		tokenOwner: anotherOwner, 
-		name: title,
-		sellerFeeBasisPoints: 0,
-	}).run();
-	console.log(x);
+	members.forEach(async (member: { memberAddress: PublicKey; nft: CreateNftOutput }) => {
+		console.log(member.memberAddress);
+		const address = new PublicKey(member.memberAddress);
+		const b= await metaplex.nfts().create({
+			uri: metadata,
+			tokenOwner: address, 
+			name: title,
+			sellerFeeBasisPoints: 0,
+		}).run();
+	})
 
-	return { first }
 }
 
 export {
