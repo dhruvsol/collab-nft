@@ -31,9 +31,9 @@ const MemberClaim = () => {
 						<div>
 							{claim ? (
 								<div className='flex justify-center pt-5 '>
-									<button className='flex justify-center  items-center bg-[#6758E5FD] rounded-2xl w-72 h-10 text-white font-medium font-Outfit '>
+									{/* <button className='flex justify-center  items-center bg-[#6758E5FD] rounded-2xl w-72 h-10 text-white font-medium font-Outfit '>
 										Claim Your NFT
-									</button>
+									</button> */}
 								</div>
 							) : (
 								<div className='pt-5 flex justify-center'>
