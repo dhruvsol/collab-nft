@@ -12,7 +12,6 @@ import {
 import { mintAndTransfer } from "../features/mintAndTransfer";
 import {
   uploadImage,
-  uploadImageToArweave,
   collabNftMetadata,
   creteNfts,
   airdropSol,

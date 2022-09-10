@@ -29,45 +29,6 @@ async function airdropSol(wallet, connection) {
 	console.log('sols airdropped', rx)
 }
 
-async function uploadImageToArweave(dataSrc) {
-	// const arweave = Arweave.init({})
-	// const key = await arweave.wallets.generate()
-	// const transaction = await arweave.createTransaction(
-	// 	{
-	// 		data: Buffer.from(
-	// 			dataSrc.replace('data:image/png;base64,', ''),
-	// 			'base64'
-	// 		),
-	// 	},
-	// 	key
-	// )
-	// console.log(transaction)
-	// const signedTxn = await arweave.transactions.sign(transaction, key)
-	// console.log(signedTxn)
-	// let uploader = await arweave.transactions.getUploader(transaction)
-	// while (!uploader.isComplete) {
-	// 	await uploader.uploadChunk()
-	// 	console.log(
-	// 		`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`
-	// 	)
-	// }
-
-	// console.log('uploaded to arwaeve', signedTxn)
-	const image = dataSrc.replace('data:image/png;base64,', '');
-	const response = await fetch("http://localhost:5001/api/uploadtoarweave", {
-		method: "POST",
-		body: JSON.stringify({
-			x: image
-		}),
-		headers: {
-			'Content-Type': 'application/json'
-		  },
-	})
-	const uri = (await response.json()).uri
-    console.log(uri)
-	return uri;
-}
-
 async function uploadImage(dataSrc) {
 	let ipfs: IPFSHTTPClient | undefined
 	try {
@@ -119,7 +80,6 @@ async function creteNfts(metadata: any, title: string, metaplex: Metaplex, membe
 
 export {
 	uploadImage,
-	uploadImageToArweave,
 	collabNftMetadata,
 	creteNfts,
 	airdropSol,
