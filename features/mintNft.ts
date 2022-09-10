@@ -64,17 +64,35 @@ async function collabNftMetadata(name: string, description: string, ipfsImage: M
 	}
 }
 
+function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+ }
+
 async function creteNfts(metadata: any, title: string, metaplex: Metaplex, members) {	
+	const transactions = [];
+	const tx = metaplex.nfts().create({
+		uri: metadata,
+		name: title,
+		sellerFeeBasisPoints: 0,
+	});	
+	transactions.push(tx)
 	members.forEach(async (member: { memberAddress: PublicKey; nft: CreateNftOutput }) => {
 		console.log(member.memberAddress);
 		const address = new PublicKey(member.memberAddress);
-		const b= await metaplex.nfts().create({
+		const tx= metaplex.nfts().create({
 			uri: metadata,
 			tokenOwner: address, 
 			name: title,
 			sellerFeeBasisPoints: 0,
-		}).run();
+		});
+		transactions.push(tx);
 	})
+	transactions.forEach(async(tx) => {
+		console.log("1");
+		await tx.run();
+		await sleep(3000);
+	});
+
 
 }
 
