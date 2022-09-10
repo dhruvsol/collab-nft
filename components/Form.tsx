@@ -41,6 +41,7 @@ export const Form = () => {
   const [ipfsHash, setHash] = useState<string>("0000000000");
   const [minted, setMinted] = useState<boolean>(false);
   const [nft, setNFT] = useState<string>("0x00000000");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // current value in reducers
   const Members = useAppSelector((state) => state.FormReducers.MemberArray);
@@ -69,18 +70,16 @@ export const Form = () => {
 
   const AddMember = () => {
     const a = { name, role, memberAddress, xp, ipfsHash, minted, nft };
-	try{
-		const isValidWallet = PublicKey.isOnCurve(new PublicKey(a.memberAddress));
-		if(isValidWallet)
-		{
-			dispatch(addNewMember(a))
-			setDefault()
-		}
-	}
-	catch(error){
-		alert("Member's wallet is invalid...")
-		setDefault()
-	}
+    try {
+      const isValidWallet = PublicKey.isOnCurve(new PublicKey(a.memberAddress));
+      if (isValidWallet) {
+        dispatch(addNewMember(a));
+        setDefault();
+      }
+    } catch (error) {
+      alert("Member's wallet is invalid...");
+      setDefault();
+    }
   };
 
   const RemoveMember = (address: string) => {
@@ -99,20 +98,24 @@ export const Form = () => {
   };
 
   function dataURLtoFile(dataurl, filename) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
+    var arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, {type:mime});
-}
+    return new File([u8arr], filename, { type: mime });
+  }
 
   const sendData = async () => {
-	const bundlrStorage = metaplex.storage().driver() as BundlrStorageDriver;
-	(await bundlrStorage.bundlr()).fund(1000);
+    setLoading(true);
+    const bundlrStorage = metaplex.storage().driver() as BundlrStorageDriver;
+    (await bundlrStorage.bundlr()).fund(1000);
     const solSig = await airdropSol(wallet, connection);
-	var file = dataURLtoFile(PreviewUrl, 'a.png');
-	const files: MetaplexFile = await toMetaplexFileFromBrowser(file);
+    var file = dataURLtoFile(PreviewUrl, "a.png");
+    const files: MetaplexFile = await toMetaplexFileFromBrowser(file);
 
     const metadataUri = await collabNftMetadata(
       Title,
@@ -122,6 +125,7 @@ export const Form = () => {
     );
     console.log(metadataUri);
     await creteNfts(metadataUri.uri, Title, metaplex, Members);
+    setLoading(false);
   };
   return (
     <>
@@ -246,8 +250,30 @@ export const Form = () => {
                 await sendData();
                 setSuccess(true);
               }}
-              className="sus w-full rounded-xl my-2 h-14 bg-[#5439CE] font-Outfit font-normal text-xl text-white"
+              className="inline-flex items-center px-4 py-2 text-sm font-semibold leading-6 text-white transition duration-150 ease-in-out bg-green-500 rounded-md shadow hover:bg-green-400"
             >
+              {loading && (
+                <svg
+                  className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
               Submit
             </button>
           </>
