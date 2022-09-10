@@ -54,7 +54,7 @@ export const Form = () => {
 
   const wallet = useWallet();
 
-  const connection = new Connection(clusterApiUrl("devnet"));
+  const connection = new Connection('https://solana-devnet.g.alchemy.com/v2/ueL5_rfSA-5XWPHsXCVBZ9A-CsqD0Dqe');
   const metaplex = Metaplex.make(connection)
     .use(walletAdapterIdentity(wallet))
     .use(bundlrStorage());
@@ -62,7 +62,7 @@ export const Form = () => {
   metaplex.use(
     bundlrStorage({
       address: "https://devnet.bundlr.network",
-      providerUrl: "https://api.devnet.solana.com",
+      providerUrl: "https://solana-devnet.g.alchemy.com/v2/ueL5_rfSA-5XWPHsXCVBZ9A-CsqD0Dqe",
       timeout: 60000,
     })
   );
